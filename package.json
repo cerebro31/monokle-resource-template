@@ -10,7 +10,11 @@
       "modules": [
         {
           "type": "template",
-          "path": "custom-pod-service-config" 
+          "path": "custom_deployment_service_configmap" 
+        },
+        {
+          "type": "template",
+          "path": "basic_pod" 
         }
       ]
     }

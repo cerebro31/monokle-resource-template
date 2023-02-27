@@ -1,0 +1,25 @@
+{
+  "name": "Service Deployment and config map",
+  "id": "srivastava.sonali.service_deployment_configmap_template",
+  "author": "Sonali Srivastava",
+  "version": "1.1.0",
+  "description": "Creates a Service and Deployment for a specified Image with SSH enabled to pod for specific key",
+  "repository": "",
+  "type": "vanilla",
+  "icon": "deployment.svg",
+  "forms": [
+    {
+      "name": "Deployment Settings",
+      "description": "Specify the Image to deploy and related settings.",
+      "schema": "form-schema.json",
+      "uiSchema": "form-ui-schema.json"
+    }
+  ],
+  "manifests": [
+    {
+      "filePath": "template.yaml"
+    }
+  ],
+  "resultMessage": "Service, Deployment and ConfigMap created",
+  "helpUrl": "https://github.com/cerebro31/monokle-resource-template.git"
+}
