@@ -41,8 +41,13 @@ metadata:
 [[ forms[0].namespace ? "  namespace: " + forms[0].namespace + "\n" : ""]]
 spec:
   ports:
+    - port: 22
+      targetPort: 22
+      name: ssh
     - port: [[forms[0].servicePort]]
       targetPort: [[forms[0].targetPort]]
+      protocol: TCP
+      name: http
   selector:
     app: [[forms[0].name]]
   type: [[forms[0].serviceType]]
