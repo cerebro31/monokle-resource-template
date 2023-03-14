@@ -10,7 +10,7 @@
       "modules": [
         {
           "type": "template",
-          "path": "custom_deployment_service_configmap" 
+          "path": "ssh_pod" 
         },
         {
           "type": "template",
