@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: [[forms[0].name]]
+  name: [[forms[0].name]]
+[[ forms[0].namespace ? "  namespace: " + forms[0].namespace + "\n" : ""]]
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: [[forms[0].name]]
+  template:
+    metadata:
+      labels:
+        app: [[forms[0].name]]
+    spec:
+      containers:
+      - image: [[forms[0].image]]
+        name: [[forms[0].name]]
+        ports:
+        - containerPort: 22
+        volumeMounts:
+        - name: ssh-volume
+          subPath: sshd_config
+          mountPath: /etc/ssh/sshd_config
+        - name: ssh-volume
+          subPath: authorized_keys
+          mountPath: /root/.ssh/authorized_keys
+      volumes:
+      - name: ssh-volume
+        configMap:
+          name: ssh-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: [[forms[0].name]]
+  name: [[forms[0].name]]
+[[ forms[0].namespace ? "  namespace: " + forms[0].namespace + "\n" : ""]]
+spec:
+  ports:
+    - port: 22
+      targetPort: 22
+      name: ssh
+    - port: [[forms[0].servicePort]]
+      targetPort: [[forms[0].targetPort]]
+      protocol: TCP
+      name: http
+  selector:
+    app: [[forms[0].name]]
+  type: [[forms[0].serviceType]]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ssh-config
+data:
+  sshd_config: |
+    PasswordAuthentication no
+    ChallengeResponseAuthentication no
+    UsePAM no
+    PermitRootLogin yes
+  authorized_keys: |
+    [[forms[0].sshKey]]
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ssh-secret
+type: Opaque
+data:
+  ssh-public-key: |
+    [[forms[0].sshKey]]
