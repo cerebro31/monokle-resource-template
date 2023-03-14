@@ -62,8 +62,6 @@ data:
     ChallengeResponseAuthentication no
     UsePAM no
     PermitRootLogin yes
-  authorized_keys: |
-    [[forms[0].sshKey]]
 ---
 apiVersion: v1
 kind: Secret
