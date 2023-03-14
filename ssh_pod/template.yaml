@@ -24,13 +24,21 @@ spec:
         - name: ssh-volume
           subPath: sshd_config
           mountPath: /etc/ssh/sshd_config
-        - name: ssh-volume
+        - name: ssh-keys
           subPath: authorized_keys
           mountPath: /root/.ssh/authorized_keys
       volumes:
-      - name: ssh-volume
-        configMap:
-          name: ssh-config
+        - name: ssh-volume
+          configMap:
+            name: ssh-config
+        - name: ssh-keys
+          secret:
+            secretName: ssh-secret
+            defaultMode: 0644
+            items:
+              - key: ssh-public-key
+                path: authorized_keys
+                mode: 0600
 ---
 apiVersion: v1
 kind: Service
@@ -62,6 +70,7 @@ data:
     ChallengeResponseAuthentication no
     UsePAM no
     PermitRootLogin yes
+    PubkeyAuthentication yes
 ---
 apiVersion: v1
 kind: Secret
